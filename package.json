@@ -13,7 +13,6 @@
   ],
   "scripts": {
     "lint": "eslint es/**/*.mjs spec/**/*.spec.mjs",
-    "pretest": "npm run lint",
     "test": "NODE_OPTIONS=--es-module-specifier-resolution=node jasmine",
     "prebuild": "npm run test",
     "build": "rm -rf lib && babel es -d lib/esm --source-maps && babel es -d lib/cjs --config-file ./babel.config.cjs.json --source-maps && ./fixup",
@@ -21,7 +20,7 @@
     "release": "npm version -m \"New version: %s\"",
     "postrelease": "npm run push && npm publish",
     "push": "git push origin master && git push origin --tags",
-    "prepare": "husky install"
+    "prepare": "npm run build"
   },
   "lint-staged": {
     "*.+(js|mjs)": [
@@ -32,7 +31,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",
-    "is-retry-allowed": "^3.0.0"
+    "is-retry-allowed": "^2.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.7",
@@ -61,10 +60,10 @@
   },
   "typings": "./index.d.ts",
   "main": "index.js",
-  "module": "lib/esm/index.js",
+  "module": "lib/cjs/index.js",
   "exports": {
     ".": {
-      "import": "./lib/esm/index.js",
+      "import": "./lib/cjs/index.js",
       "require": "./index.js"
     },
     "./package.json": "./package.json"
